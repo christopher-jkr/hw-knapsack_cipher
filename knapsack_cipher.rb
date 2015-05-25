@@ -48,9 +48,25 @@ class KnapsackCipher
   # - generalknap: Array object containing general knapsack numbers
   # Returns:
   # - Array of encrypted numbers
-  def self.encrypt(_plaintext, _generalknap = DEF_GENERAL)
+  def self.encrypt(plaintext, generalknap = DEF_GENERAL)
     # TODO: implement this method
     # TODO: Make arguments required!
+    bin_ary = split_text(plaintext)
+    bin_ary = bin_ary.map { |e| e.split('').map(&:to_i) }
+    zip_map(bin_ary, generalknap)
+  end
+
+  def self.split_text(plaintext)
+    plaintext.chars.map do |c|
+      a = c.ord.to_s(2)
+      '0' * (8 - a.length) << a if a.length < 8
+    end
+  end
+
+  def self.zip_map(ary, gen)
+    ary.map do |e|
+      e.zip(gen).map { |x, y| x * y }.inject(:+)
+    end
   end
 
   # Decrypts encrypted Array
