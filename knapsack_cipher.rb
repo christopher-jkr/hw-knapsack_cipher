@@ -1,4 +1,4 @@
-require 'Prime'
+require 'prime'
 require './modular_arithmetic.rb'
 
 class SuperKnapsack
