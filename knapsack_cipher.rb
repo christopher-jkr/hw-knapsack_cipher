@@ -29,13 +29,14 @@ class SuperKnapsack
     if n <= @knapsack.last
       arg_error = "#{n} is smaller than superincreasing knapsack"
     end
-    fail(ArgumentError, argError) unless arg_error.nil?
+    fail(ArgumentError, arg_error) unless arg_error.nil?
     @knapsack.map { |a| (a * m) % n }
   end
 end
 
 # Knapsack Cipher class
 class KnapsackCipher
+  extend ModularArithmetic
   # Default values of knapsacks, primes
   M = 41
   N = 491
@@ -50,22 +51,15 @@ class KnapsackCipher
   # - Array of encrypted numbers
   def self.encrypt(plaintext, generalknap = DEF_GENERAL)
     # TODO: implement this method
-    # TODO: Make arguments required!
     bin_ary = split_text(plaintext)
     bin_ary = bin_ary.map { |e| e.split('').map(&:to_i) }
-    zip_map(bin_ary, generalknap)
+    bin_ary.map { |ary| ary.zip(generalknap).map { |x, y| x * y }.inject(:+) }
   end
 
   def self.split_text(plaintext)
     plaintext.chars.map do |c|
       a = c.ord.to_s(2)
       '0' * (8 - a.length) << a if a.length < 8
-    end
-  end
-
-  def self.zip_map(ary, gen)
-    ary.map do |e|
-      e.zip(gen).map { |x, y| x * y }.inject(:+)
     end
   end
 
@@ -77,11 +71,28 @@ class KnapsackCipher
   # - n: prime number
   # Returns:
   # - String of plain text
-  def self.decrypt(_cipherarray, superknap = DEF_SUPER, _m = M, _n = N)
+  def self.decrypt(cipherarray, superknap = DEF_SUPER, m = M, n = N)
     fail(ArgumentError, 'Argument should be a SuperKnapsack object'
       ) unless superknap.is_a? SuperKnapsack
 
     # TODO: implement this method
-    # TODO: Make arguments required!
+    mod_i = invert(m, n)
+    superknap = superknap.knapsack.reverse
+    cipherarray = cipherarray.map { |e| e * mod_i % n }
+    plain_bin_ary = cipherarray.map { |e| div_super(e, superknap) }
+    conv_join(plain_bin_ary)
+  end
+
+  def self.div_super(v, ary, res = [])
+    a = v
+    ary.each do |e|
+      res.unshift([a / e, 1].min)
+      a -= e unless e > a
+    end
+    res
+  end
+
+  def self.conv_join(plain_bin)
+    plain_bin.map { |e| e.join.to_i(2).to_s(10).to_i.chr }.join
   end
 end
