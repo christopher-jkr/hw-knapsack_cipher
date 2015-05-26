@@ -24,9 +24,8 @@
 #     powmod(3, 4, 5) #=> 1
 #
 module ModularArithmetic
-  
   module_function
-  
+
   # Returns the greatest common denominator of `x` and `y`.
   #
   # @param [Integer] x
@@ -35,7 +34,7 @@ module ModularArithmetic
   def gcd(x, y)
     gcdext(x, y).first
   end
-  
+
   # Returns an array of the form `[gcd(x, y), a, b]`, where
   # `ax + by = gcd(x, y)`.
   #
@@ -56,13 +55,13 @@ module ModularArithmetic
     a1 = b0 = 0
     until r1.zero?
       q = r0 / r1
-      r0, r1 = r1, r0 - q*r1
-      a0, a1 = a1, a0 - q*a1
-      b0, b1 = b1, b0 - q*b1
+      r0, r1 = r1, r0 - q * r1
+      a0, a1 = a1, a0 - q * a1
+      b0, b1 = b1, b0 - q * b1
     end
     [r0, a0, b0]
   end
-  
+
   # Returns the inverse of `num` modulo `mod`.
   #
   # @param [Integer] num the number
@@ -70,13 +69,11 @@ module ModularArithmetic
   # @return [Integer]
   # @raise ZeroDivisionError if the inverse of `base` does not exist
   def invert(num, mod)
-    g, a, b = gcdext(num, mod)
-    unless g == 1
-      raise ZeroDivisionError.new("#{num} has no inverse modulo #{mod}")
-    end
+    g, a, _b = gcdext(num, mod)
+    fail(ZeroDivisionError, "#{num} has no inverse modulo #{mod}") unless g == 1
     a % mod
   end
-  
+
   # Returns `base` raised to `exp` modulo `mod`.
   #
   # @param [Integer] base the base
@@ -99,5 +96,4 @@ module ModularArithmetic
     end
     result
   end
-
 end
