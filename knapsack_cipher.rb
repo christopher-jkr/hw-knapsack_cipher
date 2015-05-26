@@ -51,15 +51,15 @@ class KnapsackCipher
   # - Array of encrypted numbers
   def self.encrypt(plaintext, generalknap = DEF_GENERAL)
     # TODO: implement this method
-    bin_ary = split_text(plaintext)
+    bin_ary = split_text(plaintext, generalknap.length)
     bin_ary = bin_ary.map { |e| e.split('').map(&:to_i) }
     bin_ary.map { |ary| ary.zip(generalknap).map { |x, y| x * y }.inject(:+) }
   end
 
-  def self.split_text(plaintext)
+  def self.split_text(plaintext, b = gen_length)
     plaintext.chars.map do |c|
       a = c.ord.to_s(2)
-      '0' * (8 - a.length) << a if a.length < 8
+      a.length < b ? '0' * (b - a.length) << a : a
     end
   end
 
@@ -87,12 +87,16 @@ class KnapsackCipher
     a = v
     ary.each do |e|
       res.unshift([a / e, 1].min)
-      a -= e unless e > a
+      e > a ? a %= e : a -= e
     end
     res
   end
 
   def self.conv_join(plain_bin)
-    plain_bin.map { |e| e.join.to_i(2).to_s(10).to_i.chr }.join
+    plain_bin.map { |e| e.join.to_i(2).chr }.join
+    # plain_bin.map do |e|
+    #   a = e.join.to_i(2)
+    #   a > 127 ? (a -= 128).chr : a.chr
+    # end.join
   end
 end
