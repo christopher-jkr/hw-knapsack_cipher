@@ -86,17 +86,13 @@ class KnapsackCipher
   def self.div_super(v, ary, res = [])
     a = v
     ary.each do |e|
-      res.unshift([a / e, 1].min)
-      e > a ? a %= e : a -= e
+      res.unshift([(a / e), 1].min)
+      e > a ? a : a -= e
     end
     res
   end
 
   def self.conv_join(plain_bin)
     plain_bin.map { |e| e.join.to_i(2).chr }.join
-    # plain_bin.map do |e|
-    #   a = e.join.to_i(2)
-    #   a > 127 ? (a -= 128).chr : a.chr
-    # end.join
   end
 end
