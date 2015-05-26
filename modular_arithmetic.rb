@@ -69,10 +69,8 @@ module ModularArithmetic
   # @return [Integer]
   # @raise ZeroDivisionError if the inverse of `base` does not exist
   def invert(num, mod)
-    g, a, b = gcdext(num, mod)
-    unless g == 1
-      raise ZeroDivisionError.new("#{num} has no inverse modulo #{mod}")
-    end
+    g, a, _b = gcdext(num, mod)
+    fail(ZeroDivisionError, "#{num} has no inverse modulo #{mod}") unless g == 1
     a % mod
   end
 
