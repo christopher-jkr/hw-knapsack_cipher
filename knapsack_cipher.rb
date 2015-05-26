@@ -79,20 +79,19 @@ class KnapsackCipher
     mod_i = invert(m, n)
     superknap = superknap.knapsack.reverse
     cipherarray = cipherarray.map { |e| e * mod_i % n }
-    plain_bin_ary = cipherarray.map { |e| div_super(e, superknap) }
-    conv_join(plain_bin_ary)
+    plain_bin_ary = cipherarray.map { |e| div_by_super(e, superknap) }
+    convert_join(plain_bin_ary)
   end
 
-  def self.div_super(v, ary, res = [])
-    a = v
+  def self.div_by_super(v, ary, res = [])
     ary.each do |e|
-      res.unshift([(a / e), 1].min)
-      e > a ? a : a -= e
+      res.unshift(v / e)
+      v %= e
     end
     res
   end
 
-  def self.conv_join(plain_bin)
+  def self.convert_join(plain_bin)
     plain_bin.map { |e| e.join.to_i(2).chr }.join
   end
 end
