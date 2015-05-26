@@ -28,9 +28,9 @@ describe 'Check if knapsack cipher works' do
   it 'should be able to decrypt what it encrypted with specified values' do
     plaintext = "Hello World!"
     sup_ks = SuperKnapsack.new([2, 3, 7, 14, 30, 57, 120, 251])
-    gen_a = sup_ks.to_general(53, 353)
+    gen_a = sup_ks.to_general(53, 503)
     array_enc = KnapsackCipher.encrypt(plaintext, gen_a)
-    text = KnapsackCipher.decrypt(array_enc, sup_ks, 53, 353)
+    text = KnapsackCipher.decrypt(array_enc, sup_ks, 53, 503)
     text.must_be :==, plaintext
   end
 end
