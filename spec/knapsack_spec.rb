@@ -9,7 +9,7 @@ describe 'Check if knapsack cipher works' do
   end
 
   it 'should encrypt a string to an array' do
-    plaintext = "Hello World!"
+    plaintext = 'Hello World!'
     sup_ks = SuperKnapsack.new([2, 3, 7, 14, 30, 57, 120, 251])
     gen_a = sup_ks.to_general(41, 491)
     array_enc = KnapsackCipher.encrypt(plaintext, gen_a)
@@ -17,7 +17,7 @@ describe 'Check if knapsack cipher works' do
   end
 
   it 'should be able to decrypt what it encrypted with default values' do
-    plaintext = "Hello World!"
+    plaintext = 'Hello World!'
     sup_ks = SuperKnapsack.new([2, 3, 7, 14, 30, 57, 120, 251])
     gen_a = sup_ks.to_general(41, 491)
     array_enc = KnapsackCipher.encrypt(plaintext, gen_a)
@@ -26,7 +26,7 @@ describe 'Check if knapsack cipher works' do
   end
 
   it 'should be able to decrypt what it encrypted with specified values' do
-    plaintext = "Hello World!"
+    plaintext = 'Hello World!'
     sup_ks = SuperKnapsack.new([2, 3, 7, 14, 30, 57, 120, 251])
     gen_a = sup_ks.to_general(53, 503)
     array_enc = KnapsackCipher.encrypt(plaintext, gen_a)
