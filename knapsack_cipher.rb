@@ -46,6 +46,28 @@ class KnapsackCipher
   # - Array of encrypted numbers
   def self.encrypt(plaintext, generalknap=DEF_GENERAL)
     # TODO: implement this method
+    ary_of_binary = plaintext.split('').map { |item| item.ord.to_s(2) }
+    ary_of_binary.each do |x|
+      while x.length < generalknap.length
+        x.insert(0, '0')
+      end
+    end
+    ary_of_binary.map do |x|
+      x.split('').map.with_index { |y, idx| y.to_i * generalknap[idx] }.reduce(:+)
+    end
+  end
+
+  def self.solve_superknap(num, knapsack_rev)
+    result = ""
+    knapsack_rev.each do |x|
+      if num >= x
+        num -= x
+        result << '1'
+      else
+        result << '0'
+      end
+    end
+    result.reverse.to_i(2).chr
   end
 
   # Decrypts encrypted Array
@@ -59,7 +81,7 @@ class KnapsackCipher
   def self.decrypt(cipherarray, superknap=DEF_SUPER, m=M, n=N)
     raise(ArgumentError, "Argument should be a SuperKnapsack object"
       ) unless superknap.is_a? SuperKnapsack
-
+    cipherarray.map! { |x| solve_superknap((x * ModularArithmetic.invert(m, n)) % n, superknap.knapsack.reverse) }.join('')
     # TODO: implement this method
   end
 end
